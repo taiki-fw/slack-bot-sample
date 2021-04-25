@@ -11,6 +11,7 @@ black = "^20.8b1"
 pylint = "^2.7.4"
 fastapi = "^0.63.0"
 uvicorn = "^0.13.4"
+slack-sdk = "^3.5.0"
 
 [tool.poetry.dev-dependencies]
 
