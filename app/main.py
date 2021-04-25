@@ -1,6 +1,6 @@
 from fastapi import FastAPI, Request
 
-from .Slack.util.lib import post_dm
+from .Slack.util.lib import post_dm, post_message_channel
 from .Slack.signature import slack_signature
 from .Slack.blocks.notification import create_thread_by_reacted
 
@@ -16,9 +16,12 @@ async def slack_commands(req: Request):
     if not await slack_signature(req):
         return {"message": "Bad Request!"}
 
-    res = [create_thread_by_reacted("野菜を育てたい", users[1]["name"])]
+    # res = [create_thread_by_reacted("野菜を育てたい", users[1]["name"])]
 
-    for user in users:
-        post_dm(user["id"], "chat bot test message", res)
+    # for user in users:
+    #     post_dm(user["id"], "chat bot test message", res)
 
-    return None
+    link = post_message_channel("test")
+    post_dm(my_account["id"], link)
+
+    return

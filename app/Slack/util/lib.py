@@ -10,6 +10,9 @@ SLACK_HEADERS = {
     "Content-Type": "application/json; charset=UTF-8",
     "Authorization": "Bearer {0}".format(SLACK_BOT_USER_OAUTH_TOKEN),
 }
+SLACK_GET_HEADERS = {
+    "Authorization": "Bearer {0}".format(SLACK_BOT_USER_OAUTH_TOKEN),
+}
 
 
 def post_dm(user_slack_id: str, text="", blocks={}):
@@ -36,11 +39,39 @@ def post_dm(user_slack_id: str, text="", blocks={}):
                 "token": SLACK_BOT_USER_OAUTH_TOKEN,
                 "channel": dm_channel_ids,
                 "text": text,
-                "blocks": blocks,
+                # "blocks": blocks,
             }
         ),
         headers=SLACK_HEADERS,
     )
-    logger.warn(res.json())
+    # logger.warn(res.json())
 
     return res.json()
+
+
+def post_message_channel(text):
+    CHANNEL_ID = "CNELSSDUZ"
+    res = requests.post(
+        "https://slack.com/api/chat.postMessage",
+        data=json.dumps(
+            {
+                "token": SLACK_BOT_USER_OAUTH_TOKEN,
+                "channel": CHANNEL_ID,
+                "text": text,
+            }
+        ),
+        headers=SLACK_HEADERS,
+    )
+
+    res = res.json()
+
+    ts = res["ts"]
+    res = requests.get(
+        "https://slack.com/api/chat.getPermalink",
+        {"channel": CHANNEL_ID, "message_ts": ts},
+        headers=SLACK_GET_HEADERS,
+    )
+    res = res.json()
+    link = res["permalink"]
+
+    return link
