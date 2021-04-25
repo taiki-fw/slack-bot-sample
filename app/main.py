@@ -1,6 +1,6 @@
 from fastapi import FastAPI, Request
 
-from .Slack.lib.lib import post_dm
+from .Slack.util.lib import post_dm
 from .Slack.signature import slack_signature
 from .Slack.blocks.notification import create_thread_by_reacted
 
